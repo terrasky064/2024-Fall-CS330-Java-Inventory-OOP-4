@@ -1,5 +1,7 @@
 package edu.odu.cs.cs330.items;
 
+import java.util.Objects;
+
 /**
  * This class represents one Consumable Item--as found in most video games.
  * This includes food.
@@ -7,28 +9,28 @@ package edu.odu.cs.cs330.items;
  * Consumable Items must be stackable.
  */
 @SuppressWarnings({
-    "PMD.CloneMethodReturnTypeMustMatchClassName",
-    "PMD.CloneThrowsCloneNotSupportedException",
-    "PMD.LawOfDemeter",
-    "PMD.OnlyOneReturn",
-    "PMD.ProperCloneImplementation",
-    "PMD.MethodArgumentCouldBeFinal",
-    "PMD.LocalVariableCouldBeFinal",
-    "PMD.BeanMembersShouldSerialize"
+        "PMD.CloneMethodReturnTypeMustMatchClassName",
+        "PMD.CloneThrowsCloneNotSupportedException",
+        "PMD.LawOfDemeter",
+        "PMD.OnlyOneReturn",
+        "PMD.ProperCloneImplementation",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.BeanMembersShouldSerialize"
 })
 public class Consumable implements Item {
     /**
      * Format used to generate a printable representation.
      */
     public static final String FMT_STR = String.join(
-        "",
-        "  Nme: %s%n",
-        "  Eft: %s%n",
-        "  Use: %d%n"
-    );
+            System.lineSeparator(),
+            "  Nme: %s",
+            "  Eft: %s",
+            "  Use: %d",
+            "");
 
     /**
-     * The name...
+     * The name of the consumable item.
      */
     protected String name;
 
@@ -43,25 +45,21 @@ public class Consumable implements Item {
     protected int uses;
 
     /**
-     * Default to a Consumable Item with an empty name, no effect and zero
-     * uses.
+     * Default to a Consumable Item with an empty name, no effect, and zero uses.
      */
-    public Consumable()
-    {
+    public Consumable() {
         this.name = "[Placeholder]";
         this.effect = "[Placeholder]";
         this.uses = 0;
     }
 
     @Override
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
 
     @Override
-    public void setName(final String nme)
-    {
+    public void setName(final String nme) {
         this.name = nme;
     }
 
@@ -70,8 +68,7 @@ public class Consumable implements Item {
      *
      * @return the set effect (i.e., buff or debuff)
      */
-    public String getEffect()
-    {
+    public String getEffect() {
         return this.effect;
     }
 
@@ -80,8 +77,7 @@ public class Consumable implements Item {
      *
      * @param newEff replacement effect
      */
-    public void setEffect(String newEff)
-    {
+    public void setEffect(String newEff) {
         this.effect = newEff;
     }
 
@@ -90,8 +86,7 @@ public class Consumable implements Item {
      *
      * @return number of total uses
      */
-    public int getNumberOfUses()
-    {
+    public int getNumberOfUses() {
         return this.uses;
     }
 
@@ -100,14 +95,12 @@ public class Consumable implements Item {
      *
      * @param allowed number of allowed uses
      */
-    public void setNumberOfUses(int allowed)
-    {
+    public void setNumberOfUses(int allowed) {
         this.uses = allowed;
     }
 
     @Override
-    public boolean isStackable()
-    {
+    public boolean isStackable() {
         return true;
     }
 
@@ -115,10 +108,11 @@ public class Consumable implements Item {
      * Clone--i.e., copy--this Consumable Item.
      */
     @Override
-    public Item clone()
-    {
+    public Item clone() {
         Consumable cpy = new Consumable();
-
+        cpy.name = this.name;
+        cpy.effect = this.effect;
+        cpy.uses = this.uses;
         return cpy;
     }
 
@@ -128,35 +122,30 @@ public class Consumable implements Item {
      * @param rhs object for which a comparison is desired
      */
     @Override
-    public boolean equals(Object rhs)
-    {
+    public boolean equals(Object rhs) {
         if (!(rhs instanceof Consumable)) {
             return false;
         }
 
         Consumable rhsItem = (Consumable) rhs;
 
-        return false;
+        return Objects.equals(this.name, rhsItem.name) &&
+                Objects.equals(this.effect, rhsItem.effect);
     }
 
     /**
-     * Generate a hash code based on name and effect.
-     *
-     * Add <code>name.hashCode()</code> and <code>effect.hashCode</code>, then
-     * return the result.
+     * Generate a hash code based on name, effect, and uses.
      */
     @Override
-    public int hashCode()
-    {
-        return -1;
+    public int hashCode() {
+        return Objects.hash(this.name, this.effect);
     }
 
     /**
-     * *Print* the Consumable Item.
+     * Print the Consumable Item.
      */
     @Override
-    public String toString()
-    {
-        return "Not Implemented";
+    public String toString() {
+        return String.format(FMT_STR, this.name, this.effect, this.uses);
     }
 }
